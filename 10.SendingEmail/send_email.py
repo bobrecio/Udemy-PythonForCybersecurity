@@ -8,8 +8,17 @@ import requests
 
 url = "https://v2.jokeapi.dev/joke/Programming?blacklistFlags=nsfw,religious,political,racist,sexist,explicit"
 
-response = requests.get(url)
+def get_joke_content():
+    response = requests.get(url)
+    result = response.json()
+    if result['error']:
+        return None
+    if result['type'] == 'twopart':
+        setup = result['setup']
+        delivery = result['delivery']
+        return f"Setup: {setup}\nDelivery: {delivery}"
+    else:
+        joke = result['joke']
+        return f"Joke: {joke}"
 
-result = response.json()
-
-print(result)
+print(get_joke_content())
